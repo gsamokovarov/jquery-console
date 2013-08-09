@@ -126,8 +126,6 @@
     // variable below to ignore the keypress event if the keydown
     // event succeeds.
     var cancelKeyPress = 0;
-    // When this value is false, the prompt will not respond to input
-    var acceptInput = true;
     // When this value is true, the command has been canceled
     var cancelCommand = false;
 
@@ -201,20 +199,18 @@
         cancelExecution();
         return false;
       }
-      if (acceptInput) {
-        if (keyCode in keyCodes) {
-          cancelKeyPress = keyCode;
-          (keyCodes[keyCode])();
-          return false;
-        } else if (e.ctrlKey && keyCode in ctrlCodes) {
-          cancelKeyPress = keyCode;
-          (ctrlCodes[keyCode])();
-          return false;
-        } else if (e.altKey  && keyCode in altCodes) {
-          cancelKeyPress = keyCode;
-          (altCodes[keyCode])();
-          return false;
-        }
+      if (keyCode in keyCodes) {
+        cancelKeyPress = keyCode;
+        (keyCodes[keyCode])();
+        return false;
+      } else if (e.ctrlKey && keyCode in ctrlCodes) {
+        cancelKeyPress = keyCode;
+        (ctrlCodes[keyCode])();
+        return false;
+      } else if (e.altKey  && keyCode in altCodes) {
+        cancelKeyPress = keyCode;
+        (altCodes[keyCode])();
+        return false;
       }
     });
 
@@ -229,7 +225,7 @@
       if ((e.ctrlKey || e.metaKey) && String.fromCharCode(keyCode).toLowerCase() == 'v') {
         return true;
       }
-      if (acceptInput && cancelKeyPress != keyCode && keyCode >= 32){
+      if (cancelKeyPress != keyCode && keyCode >= 32){
         if (cancelKeyPress) return false;
         if (
           typeof config.charInsertTrigger == 'undefined' || (
@@ -376,7 +372,6 @@
     // Handle a command
     function handleCommand() {
       if (typeof config.commandHandle == 'function') {
-        disableInput();
         addToHistory(promptText);
         var text = promptText;
         if (extern.continuedPrompt) {
@@ -413,17 +408,6 @@
         }
       }
     };
-
-    ////////////////////////////////////////////////////////////////////////
-    // Disable input
-    function disableInput() {
-      acceptInput = false;
-    };
-
-    // Enable input
-    function enableInput() {
-      acceptInput = true;
-    }
 
     ////////////////////////////////////////////////////////////////////////
     // Reset the prompt in invalid command

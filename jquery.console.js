@@ -173,7 +173,6 @@
       column = 0;
       promptText = '';
       ringn = 0; // Reset the position of the history ring
-      enableInput();
       promptBox = $('<div class="jquery-console-prompt-box"></div>');
       promptBox.css({display: 'inline'});
       var label = $('<span class="jquery-console-prompt-label"></span>');

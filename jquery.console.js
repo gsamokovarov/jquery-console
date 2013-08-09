@@ -109,9 +109,8 @@
 		// Prompt
 		var promptBox;
 		var prompt;
-		var promptLabel = config && config.promptLabel? config.promptLabel : "> ";
-		var continuedPromptLabel = config && config.continuedPromptLabel?
-		config.continuedPromptLabel : "> ";
+		var promptLabel = config && config.promptLabel == null ? config.promptLabel : "> ";
+		var continuedPromptLabel = config && config.continuedPromptLabel == null ? config.continuedPromptLabel : "> ";
 		var column = 0;
 		var promptText = '';
 		var restoreText = '';

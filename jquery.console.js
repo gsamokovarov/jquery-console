@@ -141,7 +141,6 @@
       inner.append(typer);
       typer.css({position:'absolute',top:0,left:'-9999px'});
       if (config.welcomeMessage) message(config.welcomeMessage,'jquery-console-welcome');
-      newPromptBox();
       if (config.autofocus) {
         inner.addClass('jquery-console-focus');
         typer.focus();
@@ -167,7 +166,6 @@
             welcome = false;
           }
         });
-        newPromptBox();
         inner.parent().fadeIn(function(){
           inner.addClass('jquery-console-focus');
           typer.focus();
@@ -201,24 +199,6 @@
         });
       n.css('cursor','default');
       return n;
-    };
-
-    ////////////////////////////////////////////////////////////////////////
-    // Make a new prompt box
-    function newPromptBox() {
-      column = 0;
-      promptText = '';
-      ringn = 0; // Reset the position of the history ring
-      enableInput();
-      promptBox = $('<div class="jquery-console-prompt-box"></div>');
-      var label = $('<span class="jquery-console-prompt-label"></span>');
-      var labelText = extern.continuedPrompt? continuedPromptLabel : promptLabel;
-      promptBox.append(label.text(labelText).show());
-      label.html(label.html().replace(' ','&nbsp;'));
-      prompt = $('<span class="jquery-console-prompt"></span>');
-      promptBox.append(prompt);
-      inner.append(promptBox);
-      updatePromptDisplay();
     };
 
     ////////////////////////////////////////////////////////////////////////

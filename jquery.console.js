@@ -174,34 +174,6 @@
     };
 
     ////////////////////////////////////////////////////////////////////////
-    // Reset terminal
-    extern.notice = function(msg,style){
-      var n = $('<div class="notice"></div>').append($('<div></div>').text(msg))
-        .css({visibility:'hidden'});
-      container.append(n);
-      var focused = true;
-      if (style=='fadeout')
-        setTimeout(function(){
-          n.fadeOut(function(){
-            n.remove();
-          });
-        },4000);
-      else if (style=='prompt') {
-        var a = $('<br/><div class="action"><a href="javascript:">OK</a><div class="clear"></div></div>');
-        n.append(a);
-        focused = false;
-        a.click(function(){ n.fadeOut(function(){ n.remove();inner.css({opacity:1}) }); });
-      }
-      var h = n.height();
-      n.css({height:'0px',visibility:'visible'})
-        .animate({height:h+'px'},function(){
-          if (!focused) inner.css({opacity:0.5});
-        });
-      n.css('cursor','default');
-      return n;
-    };
-
-    ////////////////////////////////////////////////////////////////////////
     // Handle setting focus
     container.click(function(){
       inner.addClass('jquery-console-focus');

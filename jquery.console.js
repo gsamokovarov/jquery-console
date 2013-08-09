@@ -140,7 +140,6 @@
       container.append(inner);
       inner.append(typer);
       typer.css({position:'absolute',top:0,left:'-9999px'});
-      if (config.welcomeMessage) message(config.welcomeMessage,'jquery-console-welcome');
       if (config.autofocus) {
         inner.addClass('jquery-console-focus');
         typer.focus();

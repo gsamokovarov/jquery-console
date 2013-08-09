@@ -86,9 +86,9 @@
       // C-k
       75: deleteUntilEnd
     };
-        if(config.ctrlCodes) {
-            $.extend(ctrlCodes, config.ctrlCodes);
-        }
+    if(config.ctrlCodes) {
+      $.extend(ctrlCodes, config.ctrlCodes);
+    }
     var altCodes = {
       // M-f
       70: moveToNextWord,
@@ -140,8 +140,7 @@
       container.append(inner);
       inner.append(typer);
       typer.css({position:'absolute',top:0,left:'-9999px'});
-      if (config.welcomeMessage)
-        message(config.welcomeMessage,'jquery-console-welcome');
+      if (config.welcomeMessage) message(config.welcomeMessage,'jquery-console-welcome');
       newPromptBox();
       if (config.autofocus) {
         inner.addClass('jquery-console-focus');
@@ -164,9 +163,9 @@
         inner.find('div').each(function(){
           if (!welcome) {
             $(this).remove();
-      } else {
-      welcome = false;
-      }
+          } else {
+            welcome = false;
+          }
         });
         newPromptBox();
         inner.parent().fadeIn(function(){
@@ -360,9 +359,7 @@
     // Delete the character at the current position
     function deleteCharAtPos(){
       if (column < promptText.length){
-        promptText =
-          promptText.substring(0,column) +
-          promptText.substring(column+1);
+        promptText = promptText.substring(0,column) + promptText.substring(column+1);
         restoreText = promptText;
         return true;
       } else return false;
@@ -392,16 +389,14 @@
       // characters.
       // Delete up to the next alphanumeric character
       while(
-        column < promptText.length &&
-        !isCharAlphanumeric(promptText[column])
+        column < promptText.length && !isCharAlphanumeric(promptText[column])
       ) {
         deleteCharAtPos();
         updatePromptDisplay();
       }
       // Then, delete until the next non-alphanumeric character
       while(
-        column < promptText.length &&
-        isCharAlphanumeric(promptText[column])
+        column < promptText.length && isCharAlphanumeric(promptText[column])
       ) {
         deleteCharAtPos();
         updatePromptDisplay();
@@ -415,9 +410,7 @@
       if (typeof config.commandValidate == 'function') {
         var ret = config.commandValidate(line);
         if (ret == true || ret == false) {
-          if (ret) {
-            handleCommand();
-          }
+          if (ret) handleCommand();
         } else {
           commandResult(ret,"jquery-console-message-error");
         }
@@ -431,7 +424,7 @@
       var version = jQuery.fn.jquery.split('.');
       var major = parseInt(version[0]);
       var minor = parseInt(version[1]);
-      
+
       // check if we're using jquery > 1.6
       if ((major == 1 && minor > 6) || major > 1) {
         inner.prop({ scrollTop: inner.prop("scrollHeight") });
@@ -443,7 +436,7 @@
 
     function cancelExecution() {
       if(typeof config.cancelHandle == 'function') {
-      config.cancelHandle();
+        config.cancelHandle();
       }
     }
 
@@ -455,10 +448,14 @@
         addToHistory(promptText);
         var text = promptText;
         if (extern.continuedPrompt) {
-          if (continuedText)
+          if (continuedText) {
             continuedText += '\n' + promptText;
-          else continuedText = promptText;
-        } else continuedText = undefined;
+          } else {
+            continuedText = promptText;
+          }
+        } else {
+          continuedText = undefined;
+        }
         if (continuedText) text = continuedText;
         var ret = config.commandHandle(text,function(msgs){
           commandResult(msgs);
@@ -546,7 +543,9 @@
       if (column + n >= 0 && column + n <= promptText.length){
         column += n;
         return true;
-      } else return false;
+      } else {
+        return false;
+      }
     };
 
     function moveForward() {
@@ -566,13 +565,11 @@
     };
 
     function moveToStart() {
-      if (moveColumn(-column))
-        updatePromptDisplay();
+      if (moveColumn(-column)) updatePromptDisplay();
     };
 
     function moveToEnd() {
-      if (moveColumn(promptText.length-column))
-        updatePromptDisplay();
+      if (moveColumn(promptText.length-column)) updatePromptDisplay();
     };
 
     function moveToNextWord() {

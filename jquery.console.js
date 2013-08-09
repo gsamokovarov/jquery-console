@@ -86,9 +86,7 @@
       // C-k
       75: deleteUntilEnd
     };
-    if(config.ctrlCodes) {
-      $.extend(ctrlCodes, config.ctrlCodes);
-    }
+    if (config.ctrlCodes) $.extend(ctrlCodes, config.ctrlCodes);
     var altCodes = {
       // M-f
       70: moveToNextWord,
@@ -138,6 +136,7 @@
       container.append(inner);
       inner.append(typer);
       typer.css({position:'absolute',top:0,left:'-9999px'});
+      newPromptBox();
       if (config.autofocus) {
         inner.addClass('jquery-console-focus');
         typer.focus();
@@ -150,6 +149,26 @@
       extern.typer = typer;
       extern.scrollToBottom = scrollToBottom;
     })();
+
+
+    ////////////////////////////////////////////////////////////////////////
+    // Make a new prompt box
+    function newPromptBox() {
+      column = 0;
+      promptText = '';
+      ringn = 0; // Reset the position of the history ring
+      enableInput();
+      promptBox = $('<div class="jquery-console-prompt-box"></div>');
+      promptBox.css({display: 'inline'});
+      var label = $('<span class="jquery-console-prompt-label"></span>');
+      var labelText = extern.continuedPrompt? continuedPromptLabel : promptLabel;
+      promptBox.append(label.text(labelText).show());
+      label.html(label.html().replace(' ','&nbsp;'));
+      prompt = $('<span class="jquery-console-prompt"></span>');
+      promptBox.append(prompt);
+      inner.append(promptBox);
+      updatePromptDisplay();
+    };
 
     ////////////////////////////////////////////////////////////////////////
     // Handle setting focus
@@ -411,29 +430,28 @@
 
     ////////////////////////////////////////////////////////////////////////
     // Reset the prompt in invalid command
-    function commandResult(msg,className) {
+    function commandResult(msg, className) {
       column = -1;
       updatePromptDisplay();
       if (typeof msg == 'string') {
-        message(msg,className);
+        message(msg, className);
       } else if ($.isArray(msg)) {
         for (var x in msg) {
           var ret = msg[x];
-          message(ret.msg,ret.className);
+          message(ret.msg, ret.className);
         }
       } else { // Assume it's a DOM node or jQuery object.
-        inner.append(msg);
+        inner.find('.jquery-console-prompt-box:last').prepend(msg);
       }
-      newPromptBox();
     };
 
     ////////////////////////////////////////////////////////////////////////
     // Display a message
-    function message(msg,className) {
+    function message(msg, className) {
       var mesg = $('<div class="jquery-console-message"></div>');
       if (className) mesg.addClass(className);
       mesg.filledText(msg).hide();
-      inner.append(mesg);
+      inner.find('.jquery-console-prompt-box:last').prepend(mesg);
       mesg.show();
     };
 

@@ -150,6 +150,22 @@
       extern.scrollToBottom = scrollToBottom;
     })();
 
+    ////////////////////////////////////////////////////////////////////////
+    // Reset the prompt in invalid command
+    extern.report = function(msg, className) {
+      column = -1;
+      updatePromptDisplay();
+      if (typeof msg == 'string') {
+        message(msg, className);
+      } else if ($.isArray(msg)) {
+        for (var x in msg) {
+          var ret = msg[x];
+          message(ret.msg, ret.className);
+        }
+      } else { // Assume it's a DOM node or jQuery object.
+        inner.find('.jquery-console-prompt-box:last').prepend(msg);
+      }
+    };
 
     ////////////////////////////////////////////////////////////////////////
     // Make a new prompt box
@@ -359,7 +375,7 @@
         if (ret == true || ret == false) {
           if (ret) handleCommand();
         } else {
-          commandResult(ret,"jquery-console-message-error");
+          extern.report(ret,"jquery-console-message-error");
         }
       } else {
         handleCommand();
@@ -404,44 +420,27 @@
         }
         if (continuedText) text = continuedText;
         var ret = config.commandHandle(text,function(msgs){
-          commandResult(msgs);
+          extern.report(msgs);
         });
         if (extern.continuedPrompt && !continuedText)
           continuedText = promptText;
         if (typeof ret == 'boolean') {
           if (ret) {
             // Command succeeded without a result.
-            commandResult();
+            extern.report();
           } else {
-            commandResult(
+            extern.report(
               'Command failed.',
               "jquery-console-message-error"
             );
           }
         } else if (typeof ret == "string") {
-          commandResult(ret,"jquery-console-message-success");
+          extern.report(ret,"jquery-console-message-success");
         } else if (typeof ret == 'object' && ret.length) {
-          commandResult(ret);
+          extern.report(ret);
         } else if (extern.continuedPrompt) {
-          commandResult();
+          extern.report();
         }
-      }
-    };
-
-    ////////////////////////////////////////////////////////////////////////
-    // Reset the prompt in invalid command
-    function commandResult(msg, className) {
-      column = -1;
-      updatePromptDisplay();
-      if (typeof msg == 'string') {
-        message(msg, className);
-      } else if ($.isArray(msg)) {
-        for (var x in msg) {
-          var ret = msg[x];
-          message(ret.msg, ret.className);
-        }
-      } else { // Assume it's a DOM node or jQuery object.
-        inner.find('.jquery-console-prompt-box:last').prepend(msg);
       }
     };
 
@@ -572,7 +571,7 @@
               col = 0;
             }
           }
-          commandResult(buffer,"jquery-console-message-value");
+          extern.report(buffer,"jquery-console-message-value");
           extern.promptText(prompt);
         }
       }
